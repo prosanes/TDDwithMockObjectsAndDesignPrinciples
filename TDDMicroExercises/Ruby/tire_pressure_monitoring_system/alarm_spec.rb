@@ -18,6 +18,24 @@ describe Alarm, "check" do
 		alarm.alarm_on.should be_false
 	end
 	
+	it "should be off when pressure between expected limits" do
+		alarm = Alarm.new create_sensor_double_with(pressure: Alarm::LOW_PRESSURE + 1)
+		alarm.check
+		alarm.alarm_on.should be_false
+	end
+
+	it "should be off when pressure equals higher limit" do
+		alarm = Alarm.new create_sensor_double_with(pressure: Alarm::HIGH_PRESSURE)
+		alarm.check
+		alarm.alarm_on.should be_false
+	end
+
+	it "should be on when pressure higher them high limit" do
+		alarm = Alarm.new create_sensor_double_with(pressure: Alarm::HIGH_PRESSURE + 1)
+		alarm.check
+		alarm.alarm_on.should be_true
+	end
+
 	def create_sensor_double_with(pressure: 0)
 		sensorDouble = double()
 		sensorDouble.stub(:pop_next_pressure_psi_value)
