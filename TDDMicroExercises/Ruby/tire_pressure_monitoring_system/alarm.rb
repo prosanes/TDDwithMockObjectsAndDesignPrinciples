@@ -4,16 +4,20 @@ class Alarm
 
   attr_reader :alarm_on
 
-  def initialize
-    @sensor = Sensor.new
+  def initialize(sensor)
+    @sensor = sensor
     @alarm_on = false
   end
 
   def check
     pressure = @sensor.pop_next_pressure_psi_value()
 
-    @alarm_on = true if pressure < LOW_PRESSURE || HIGH_PRESSURE < pressure
-    end
+	if pressure < LOW_PRESSURE || HIGH_PRESSURE < pressure then
+		@alarm_on = true
+	else
+		@alarm_on = false
+	end
+  end
 
 private
 
