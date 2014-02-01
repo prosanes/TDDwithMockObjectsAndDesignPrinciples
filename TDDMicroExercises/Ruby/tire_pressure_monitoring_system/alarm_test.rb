@@ -14,6 +14,11 @@ class AlarmTest < Test::Unit::TestCase
 		end
 	end
 
+	class SensorBetweenLowAndHigherPressure
+		def pop_next_pressure_psi_value
+			Alarm::LOW_PRESSURE
+		end
+	end
 	def test_should_be_off_when_initialized
 		alarm = Alarm.new SensorLowerThemLowPressure.new
 		assert !alarm.alarm_on 
@@ -29,4 +34,8 @@ class AlarmTest < Test::Unit::TestCase
 		assert !alarm.check 
 	end
 
+	def test_should_be_off_when_pressure_between_lower_and_higher_limit
+		alarm = Alarm.new SensorBetweenLowAndHigherPressure.new
+		assert !alarm.check 
+	end
 end
