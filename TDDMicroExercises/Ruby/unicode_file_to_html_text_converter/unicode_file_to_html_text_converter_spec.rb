@@ -23,7 +23,10 @@ describe UnicodeFileToHtmTextConverter, "" do
 		html.scan("<br />").count.should eq 2
 	end
 
-	it "escapes special characters"
+	it "escapes special characters" do
+		html = converted_html_from_file_content_given_path('./fixtures/file_with_special_chars.txt')
+		html.should eq "Usage: foo &quot;bar&quot; &lt;baz&gt; &amp;\n<br />"
+	end
 
 	def converted_html_from_file_content_given_path(path)
 		converter = UnicodeFileToHtmTextConverter.new(path)
