@@ -4,25 +4,30 @@ require_relative './unicode_file_to_html_text_converter'
 describe UnicodeFileToHtmTextConverter, "" do
 
 	it "creates an empty html when not receiving a file" do
-		converter = UnicodeFileToHtmTextConverter.new(nil)
-		html = converter.convert_to_html
+		html = converted_html_from_file_content_given_path(nil)
 		html.should eq ""
 	end
 
 	it "creates an empty html when receiving an invalid path" do
-		converter = UnicodeFileToHtmTextConverter.new('/invalid_path')
-		html = converter.convert_to_html
+		html = converted_html_from_file_content_given_path('/invalid_path')
 		html.should eq ""
 	end
 
 	it "converts an empty file to an empty html" do
-		converter = UnicodeFileToHtmTextConverter.new('./fixtures/empty_file.txt')
-		html = converter.convert_to_html
+		html = converted_html_from_file_content_given_path('./fixtures/empty_file.txt')
 		html.should eq ""
 	end
 
-	it "creates a <br> tag for each line"
+	it "creates a <br> tag for each line" do
+		html = converted_html_from_file_content_given_path('./fixtures/file_with_two_lines.txt')
+		html.scan("<br />").count.should eq 2
+	end
 
 	it "escapes special characters"
+
+	def converted_html_from_file_content_given_path(path)
+		converter = UnicodeFileToHtmTextConverter.new(path)
+		html = converter.convert_to_html
+	end
 end
 
