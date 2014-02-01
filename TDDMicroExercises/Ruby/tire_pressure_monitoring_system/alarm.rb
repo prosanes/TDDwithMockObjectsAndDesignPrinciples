@@ -12,7 +12,11 @@ class Alarm
   def check
     pressure = @sensor.pop_next_pressure_psi_value()
 
-    @alarm_on = true if pressure < LOW_PRESSURE || HIGH_PRESSURE < pressure
+	if pressure < LOW_PRESSURE || HIGH_PRESSURE < pressure then
+		@alarm_on = true
+	else
+		@alarm_on = false
+	end
   end
 
 private
