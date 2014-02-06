@@ -1,4 +1,10 @@
+require 'cgi'
+
 class UnicodeFileToHtmTextConverter
+
+	def self.build(path='')
+		new(File.open(path), CGI)
+	end
 
 	def initialize(file, html_escaper)
 		@file = file
