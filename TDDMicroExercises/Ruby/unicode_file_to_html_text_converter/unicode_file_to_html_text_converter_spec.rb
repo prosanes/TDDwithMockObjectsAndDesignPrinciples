@@ -2,7 +2,7 @@ require_relative './unicode_file_to_html_text_converter'
 
 describe UnicodeFileToHtmTextConverter, "" do
 
-	context "object" do
+	context "object", type: :unit do
 		it "creates an empty html when not receiving a file" do
 			converter = UnicodeFileToHtmTextConverter.new(nil, double())
 			html = converter.convert_to_html
@@ -48,7 +48,7 @@ describe UnicodeFileToHtmTextConverter, "" do
 		converter = UnicodeFileToHtmTextConverter.new(file, html_escaper)
 	end
 
-	context "integration" do
+	context "integration", type: :integration do
 		it "works correctly with File and CGI dependencies" do
 			u = UnicodeFileToHtmTextConverter.build('./fixtures/file_with_two_lines.txt')
 			t = u.convert_to_html
