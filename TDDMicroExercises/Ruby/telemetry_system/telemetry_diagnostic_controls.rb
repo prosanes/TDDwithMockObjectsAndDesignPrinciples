@@ -4,8 +4,8 @@ class TelemetryDiagnosticControls
 
   attr_reader :diagnostic_info
 
-  def initialize 
-    @telemetry_client = TelemetryClient.new 
+  def initialize(telemetry_client: TelemetryClient.new)
+    @telemetry_client = telemetry_client
     @diagnostic_info = ''
   end
 

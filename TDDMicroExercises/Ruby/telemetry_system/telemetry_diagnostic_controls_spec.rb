@@ -4,25 +4,29 @@ require_relative './telemetry_client'
 describe TelemetryDiagnosticControls do
 	context "when connection fail" do
 		it "should try to connect at least 3 times before raising error" do
-			begin
-				TelemetryClient.any_instance.stub(:online_status).and_return(false)
-				TelemetryClient.any_instance.should_receive(:connect).exactly(3).times
-				ctrl = TelemetryDiagnosticControls.new
-				expect {
-					ctrl.check_transmission
-				}.to raise_error
-			rescue Exception
-			end
+			tc = double()
+			tc.stub(:disconnect)
+			tc.stub(:online_status).and_return(false)
+			tc.should_receive(:connect).exactly(3).times
+			ctrl = TelemetryDiagnosticControls.new(telemetry_client: tc)
+			expect {
+				ctrl.check_transmission
+			}.to raise_error
 		end
 	end
 
 	context "when connection succeeds" do
 		it "receives the message" do
-			TelemetryClient.any_instance.stub(:online_status).and_return(true)
+			tc = double()
+			tc.stub(:disconnect)
+			tc.stub(:online_status).and_return(:true)
+			tc.stub(:connect)
+			tc.stub(:send)
+			tc.stub(:receive).and_return("expected")
 			#TelemetryClient.any_instance.should_receive(:send)
-			ctrl = TelemetryDiagnosticControls.new
+			ctrl = TelemetryDiagnosticControls.new(telemetry_client:tc)
 			msg = ctrl.check_transmission
-			msg.should start_with("LAST") 
+			msg.should start_with("expected") 
 		end
 	end
 
