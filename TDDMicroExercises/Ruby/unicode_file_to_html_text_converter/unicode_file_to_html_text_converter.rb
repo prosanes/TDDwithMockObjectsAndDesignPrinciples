@@ -2,19 +2,36 @@ require 'cgi'
 
 class UnicodeFileToHtmTextConverter
 
-  def initialize(file_path)
-    @full_file_name_with_path = file_path
-  end
+	def self.build(path='')
+		new(File.open(path), CGI)
+	end
 
-  def convert_to_html
-    text = File.open(@full_file_name_with_path).read
+	def initialize(file, html_escaper)
+		@file = file
+		@html_escaper = html_escaper
+	end
 
-    html = ''
-    text.each_line do |line|
-      html += CGI::escapeHTML(line)
-      html += '<br />'
-    end
+	def convert_to_html
+		text = get_text_from_file
+		convert_text_to_html text
+	end
 
-    html
-  end
+private
+
+	def get_text_from_file
+		if @file then
+			@file.read
+		else
+			''
+		end
+	end
+
+	def convert_text_to_html(text)
+		html = ''
+		text.each_line do |line|
+			html += @html_escaper::escapeHTML(line)
+			html += '<br />'
+		end
+		html
+	end
 end
