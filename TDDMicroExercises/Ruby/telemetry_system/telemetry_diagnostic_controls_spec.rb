@@ -8,10 +8,12 @@ describe TelemetryDiagnosticControls do
 			tc.stub(:disconnect)
 			tc.stub(:online_status).and_return(false)
 			tc.should_receive(:connect).exactly(3).times
+
 			ctrl = TelemetryDiagnosticControls.new(telemetry_client: tc)
+
 			expect {
 				ctrl.check_transmission
-			}.to raise_error
+			}.to raise_error(UnableToConnect)
 		end
 	end
 
@@ -23,10 +25,11 @@ describe TelemetryDiagnosticControls do
 			tc.stub(:connect)
 			tc.stub(:send)
 			tc.stub(:receive).and_return("expected")
-			#TelemetryClient.any_instance.should_receive(:send)
+
 			ctrl = TelemetryDiagnosticControls.new(telemetry_client:tc)
-			msg = ctrl.check_transmission
-			msg.should start_with("expected") 
+			ctrl.check_transmission
+
+			expect(ctrl.diagnostic_info).to eq("expected")
 		end
 	end
 
