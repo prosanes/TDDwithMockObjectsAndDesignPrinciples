@@ -1,3 +1,7 @@
+My solutions to the exercise proposed by Luca Minudel.
+
+I wrote the solutions under TDDMicroExercises/Ruby. Still pending to move them to TDDMicroExercises.YoursSolution.
+
 # TDD with Mock Objects: Design Principles and Emerging Properties
 
 Here you can find:
